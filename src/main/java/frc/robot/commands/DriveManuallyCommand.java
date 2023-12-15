@@ -7,11 +7,11 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.SwerveChassis;
 
-public class DriveManuallyCommand extends CommandBase {
+public class DriveManuallyCommand extends Command {
 
   private final DoubleSupplier mVxSupplier;
 	private final DoubleSupplier mVySupplier;

@@ -4,13 +4,13 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 
-public class TurnToAngleZeroHeadingCommand extends CommandBase {
+public class TurnToAngleZeroHeadingCommand extends Command {
 	private final double kP = 2;
 	private final double kI = 0;
 	private final double kD = 0;
