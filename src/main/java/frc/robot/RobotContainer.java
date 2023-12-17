@@ -12,9 +12,7 @@ import frc.robot.Devices.Controller;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveManuallyCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.RunTrajectorySequenceRobotAtStartPoint;
 import frc.robot.commands.TurnToAngleZeroHeadingCommand;
-import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IMUSubsystem;
@@ -372,29 +370,29 @@ public class RobotContainer {
    * Bindings to test simple swerve trajectories done in PathPlanner
    */
   public void trajectoryCalibration() {
-      new JoystickButton(driveStick, 11)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterForward"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 12)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterSideways"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 9)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1Meter45Diag"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(turnStick, 11)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("InPlaceTurn90"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(turnStick, 10)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("SwiggleWiggle"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 7)
-              .whileTrue(new ZeroHeadingCommand())
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 8)
-              .whileTrue(new TurnToAngleZeroHeadingCommand(Rotation2d.fromDegrees(0)))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(turnStick, 12)
-              .whileTrue(new InstantCommand(RobotContainer.driveSubsystem::testOdometryUpdates));
+    //   new JoystickButton(driveStick, 11)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterForward"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 12)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterSideways"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 9)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1Meter45Diag"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(turnStick, 11)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("InPlaceTurn90"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(turnStick, 10)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("SwiggleWiggle"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 7)
+    //           .whileTrue(new ZeroHeadingCommand())
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 8)
+    //           .whileTrue(new TurnToAngleZeroHeadingCommand(Rotation2d.fromDegrees(0)))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(turnStick, 12)
+    //           .whileTrue(new InstantCommand(RobotContainer.driveSubsystem::testOdometryUpdates));
         
 
   }
