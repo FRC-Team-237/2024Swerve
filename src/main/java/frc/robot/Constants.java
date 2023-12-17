@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -121,6 +125,16 @@ public final class Constants {
 
 		// For trajectory driving.
 		public static final double MAX_ACCELERATION = 2.0;
+        public static final double MAX_ANGULAR_ACCELERATION = 0;
+
+		// define the HolonomicPathFollowerConfig for this drive. 
+		public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
+			new PIDConstants(DRIVE_CHASSIS_KP ,DRIVE_CHASSIS_KI,DRIVE_CHASSIS_KP),
+			new PIDConstants(ANGLE_CHASSIS_KP ,ANGLE_CHASSIS_KI, ANGLE_CHASSIS_KD),
+			MAX_VELOCITY,
+			0.4,
+			new ReplanningConfig()
+		); 
 
 		/**
 		 * Parameters for BaseMotorTalonSRX class
