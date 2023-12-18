@@ -34,6 +34,9 @@ public class BaseMotorPassthrough implements BaseMotorInterface {
       case TALON_SRX:
         baseMotorInterface = new BaseMotorTalonSRX(CANID);
         break;
+      case SPARKMAX:
+        baseMotorInterface = new BaseMotorNEO(CANID);
+        break;
       default:
 
     }
@@ -55,6 +58,10 @@ public class BaseMotorPassthrough implements BaseMotorInterface {
     return baseMotorInterface.getAngleEncoderPosition();
   }
 
+  public double getAngleEncoderPositionCorrected() {
+    return baseMotorInterface.getAngleEncoderPosition();
+  }
+
   public double getDriveEncoderVelocity() {
     return baseMotorInterface.getAngleEncoderVelocity();
   }
@@ -70,6 +77,11 @@ public class BaseMotorPassthrough implements BaseMotorInterface {
   public double getAngleEncoderPositionSI() {
     return baseMotorInterface.getAngleEncoderPositionSI();
   }
+
+  public double getAngleEncoderPositionSICorrected() {
+    return baseMotorInterface.getAngleEncoderPositionSI();
+  }
+  
 
   public double getDriveEncoderVelocitySI() {
     return baseMotorInterface.getAngleEncoderVelocitySI();

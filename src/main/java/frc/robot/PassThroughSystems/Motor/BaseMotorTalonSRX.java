@@ -1,5 +1,7 @@
 package frc.robot.PassThroughSystems.Motor;
 
+import java.lang.invoke.ConstantCallSite;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
@@ -22,6 +24,7 @@ public class BaseMotorTalonSRX implements BaseMotorInterface {
         System.out.println("**** Activating TalonSRX CANID:" + CANID);
 
         motorTalonSRX = new WPI_TalonSRX(CANID);
+
     }
 
     public void configureDriveMotor(Constants.SwerveChassis.SwerveModuleConstants c) {
@@ -79,6 +82,10 @@ public class BaseMotorTalonSRX implements BaseMotorInterface {
         return motorTalonSRX.getSelectedSensorPosition();
     }
 
+    public double getAngleEncoderPositionCorrected() {
+        return getAngleEncoderPosition();
+    }
+
     public double getDriveEncoderVelocity() {
         return motorTalonSRX.getSelectedSensorVelocity();
     }
@@ -93,6 +100,10 @@ public class BaseMotorTalonSRX implements BaseMotorInterface {
 
     public double getAngleEncoderPositionSI() {
         return motorTalonSRX.getSelectedSensorPosition()*Constants.SwerveChassis.TalonSRXSwerveConfiguration.degreePerTick;
+    }
+
+    public double getAngleEncoderPositionSICorrected() {
+        return getAngleEncoderPositionSI();
     }
 
     public double getDriveEncoderVelocitySI() {

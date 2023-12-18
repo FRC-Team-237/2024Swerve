@@ -32,6 +32,8 @@ public interface BaseMotorInterface {
 
     double getAngleEncoderPosition();
 
+    double getAngleEncoderPositionCorrected(); 
+
     double getDriveEncoderVelocity();
 
     double getAngleEncoderVelocity();
@@ -39,6 +41,8 @@ public interface BaseMotorInterface {
     double getDriveEncoderPositionSI();
 
     double getAngleEncoderPositionSI();
+
+    double getAngleEncoderPositionSICorrected();
 
     double getDriveEncoderVelocitySI();
 
@@ -49,5 +53,6 @@ public interface BaseMotorInterface {
     void testMotorApplyPower(double power); // Test method to check inversion and encoders
 
     void applyPower(double power); // Apply power to the motor. Should be between -1 and 1
+
 
 }

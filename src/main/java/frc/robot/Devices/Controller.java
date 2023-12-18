@@ -2,6 +2,7 @@ package frc.robot.Devices;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.OIConstants.ControllerDevice;
 import frc.robot.Constants.OIConstants.ControllerDeviceType;
@@ -23,6 +24,8 @@ public class Controller extends Joystick {
     private double cubeDeadbandX;
     private double cubeDeadbandY;
     private double cubeDeadbandOmega;
+
+    private XboxController xboxController;
     
     public Controller(Constants.OIConstants.ControllerDevice cd) {
         super(cd.getPortNumber()); // This needs to be done because the joystick parent class has a non-default constructor
@@ -66,6 +69,9 @@ public class Controller extends Joystick {
         double rawY;
         double result;
 
+        // test
+        //System.out.println("CT:"+cdt);
+
         switch(cdt){
             case LOGITECH:
                 rawY = this.getY();
@@ -75,7 +81,13 @@ public class Controller extends Joystick {
                 break;
             default:
                 return 0; // Unknown controller type
+
         }
+
+        // test
+        //System.out.println("CRAWY:"+rawY);
+
+
         if (this.cubeControllerLeftStick) {
             double cubeY = rawY*rawY*rawY;
             result = (cubeY - (rawY > 0 ? 1 : -1) * cubeDeadbandY)/(1 - cubeDeadbandY); // cubeController
@@ -97,7 +109,6 @@ public class Controller extends Joystick {
                 break;
             case XBOX:
                 rawX = this.getRawAxis(0);
-                //System.out.println("rawX: " + rawX);
                 break;
             default:
                 return 0; // Unknown controller type

@@ -138,7 +138,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void drive(double xVelocity_m_per_s, double yVelocity_m_per_s, double omega_rad_per_s, boolean fieldcentric) {
     SwerveModuleState[] swerveModuleStates;
-
+    System.out.println("***X: "+xVelocity_m_per_s+" ***Y: "+yVelocity_m_per_s+" ***o: "+omega_rad_per_s);
     if (fieldcentric) { // field-centric swerve
       swerveModuleStates = SwerveChassis.SWERVE_KINEMATICS.toSwerveModuleStates(
           ChassisSpeeds.fromFieldRelativeSpeeds(
