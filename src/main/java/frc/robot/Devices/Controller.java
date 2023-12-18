@@ -81,6 +81,7 @@ public class Controller extends Joystick {
                 break;
             default:
                 return 0; // Unknown controller type
+
         }
 
         // test

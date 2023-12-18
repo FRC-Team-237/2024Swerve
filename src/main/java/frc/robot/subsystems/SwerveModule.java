@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.SwerveChassis;
 import frc.robot.Constants.SwerveChassis.SwerveTelemetry;
 import frc.robot.PassThroughSystems.Motor.BaseMotorPassthrough;
@@ -145,9 +146,9 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public void printSwerveModuleState(SwerveModuleState moduleState) {
-        System.out.print(" SM: "+moduleNumber);
-        System.out.print(" P: "+moduleState.speedMetersPerSecond / SwerveChassis.MAX_VELOCITY);
-        System.out.println(" A: "+((moduleState.angle.getDegrees()+360.0)%360.0));
+        RobotContainer.myStringLog.append(" SM: "+moduleNumber+
+            " P: "+moduleState.speedMetersPerSecond / SwerveChassis.MAX_VELOCITY+
+            " A: "+moduleState.angle.getDegrees());
     }
 
     //TODO: This position is currently set in the encoder units. This may need to change to the SI units. Investigate.

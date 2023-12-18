@@ -7,19 +7,22 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.OIConstants.ControllerDevice;
+import frc.robot.Constants.SwerveChassis.SwerveTelemetry;
 import frc.robot.Devices.Controller;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveManuallyCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.RunTrajectorySequenceRobotAtStartPoint;
 import frc.robot.commands.TurnToAngleZeroHeadingCommand;
-import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IMUSubsystem;
 import frc.robot.subsystems.SmartDashboardSubsystem;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -46,6 +49,10 @@ public class RobotContainer {
 
   public static Controller xboxController;
 
+
+  public static Joystick bbl;
+  public static Joystick bbr;
+
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -54,9 +61,18 @@ public class RobotContainer {
   
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  
+  // A Data Log Manager file handle
+  public static StringLogEntry myStringLog;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
+      if(SwerveTelemetry.saveDataUsingDataLogManager) {
+        DataLogManager.start();
+        DataLog log = DataLogManager.getLog();
+        myStringLog = new StringLogEntry(log, SwerveTelemetry.logFileName);
+      }
 
       // Configure driver interface - binding joystick objects to port numbers
       configureDriverInterface();
@@ -65,7 +81,8 @@ public class RobotContainer {
       configureBindings();
 
       // This command should be for the teleop driving
-      // Note that the first three of its parameters are DoubleSupplier, and the last one is a
+      // Note that the first three of its parameters are DoubleSupplier, and the last
+      // one is a
       // BooleanSupplier
       
       driveSubsystem.setDefaultCommand(
@@ -93,6 +110,9 @@ public class RobotContainer {
       driveStick = new Controller(ControllerDevice.DRIVESTICK);
       turnStick = new Controller(ControllerDevice.TURNSTICK);
       xboxController = new Controller(ControllerDevice.XBOX_CONTROLLER);
+
+      bbl = new Joystick(OIConstants.bblPort);
+      bbr = new Joystick(OIConstants.bbrPort);
       System.out.println("Driver interface configured");
   }
 
@@ -122,9 +142,28 @@ public class RobotContainer {
 
       //swerveValuesTesting();
 
-      //trajectoryCalibration();
-      //testCalibrateMotorsAndEncodersButtonBindings();
-      //swerveValuesTesting();
+
+      driveTypeSelector();
+
+  }
+
+  public void setDrivingToXBox() {
+    OIConstants.driverInterfaceType = OIConstants.ControllerDeviceType.XBOX;
+    
+    System.out.println("*** Control switch to Xbox");
+  }
+
+  public void setDrivingToLogitech() {
+    OIConstants.driverInterfaceType = OIConstants.ControllerDeviceType.LOGITECH;
+
+    System.out.println("*** Control switch to Logitech");
+  }
+
+  public void driveTypeSelector() {
+    new JoystickButton(bbl, OIConstants.driverInterfaceSwitchButton)
+        .onTrue(new InstantCommand(() -> setDrivingToLogitech()))
+        .onFalse(new InstantCommand(() -> setDrivingToXBox()));
+
   }
 
   /**
@@ -158,37 +197,36 @@ public class RobotContainer {
    *
    * @return
    */
-//   private double getDriverXAxis() {
-//       return -driveStick.getLeftStickY();
-//   }
 
-//   private double getDriverYAxis() {
-//       return -driveStick.getLeftStickX();
-//   }
-
-//   private double getDriverOmegaAxis() {
-//       return -turnStick.getLeftStickOmega();
-//   }
-
-private double getDriverXAxis() {
+  private double getDriverXAxis() {
     // return -driveStick.getLeftStickY();
 
     //System.out.println("***--- DX:"+-xboxController.getLeftStickY());
-
-    return -xboxController.getLeftStickY();
+    switch (OIConstants.driverInterfaceType){
+        case XBOX: return -xboxController.getLeftStickY();
+        case LOGITECH: return -driveStick.getLeftStickY();
+    }
+    return 0;
  }
 
  private double getDriverYAxis() {
     // return -driveStick.getLeftStickX();
-    return -xboxController.getLeftStickX();
+    //System.out.println("Test Y "+ OIConstants.driverInterfaceType);
+    switch (OIConstants.driverInterfaceType){
+        case XBOX: return -xboxController.getLeftStickX();
+        case LOGITECH: return -driveStick.getLeftStickX();
+    }
+    return 0; 
  }
 
  private double getDriverOmegaAxis() {
     // return -turnStick.getLeftStickOmega();
-    return -xboxController.getLeftStickOmega();
+    switch (OIConstants.driverInterfaceType){
+        case XBOX: return -xboxController.getLeftStickOmega();
+        case LOGITECH: return -turnStick.getLeftStickOmega();
+    }
+    return 0;
  }
-
-  
 
   /**
    * If the button is pressed, use robot-centric swerve
@@ -337,32 +375,29 @@ private double getDriverXAxis() {
    * Bindings to test simple swerve trajectories done in PathPlanner
    */
   public void trajectoryCalibration() {
-      new JoystickButton(driveStick, 11)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterForward"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 12)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterSideways"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 9)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1Meter45Diag"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 10)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("MeterStraightTurn90"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(turnStick, 11)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("InPlaceTurn90"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(turnStick, 10)
-              .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("SwiggleWiggle"))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 7)
-              .whileTrue(new ZeroHeadingCommand())
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(driveStick, 8)
-              .whileTrue(new TurnToAngleZeroHeadingCommand(Rotation2d.fromDegrees(0)))
-              .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
-      new JoystickButton(turnStick, 12)
-              .whileTrue(new InstantCommand(RobotContainer.driveSubsystem::testOdometryUpdates));
+    //   new JoystickButton(driveStick, 11)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterForward"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 12)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1MeterSideways"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 9)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("1Meter45Diag"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(turnStick, 11)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("InPlaceTurn90"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(turnStick, 10)
+    //           .whileTrue(new RunTrajectorySequenceRobotAtStartPoint("SwiggleWiggle"))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 7)
+    //           .whileTrue(new ZeroHeadingCommand())
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(driveStick, 8)
+    //           .whileTrue(new TurnToAngleZeroHeadingCommand(Rotation2d.fromDegrees(0)))
+    //           .whileFalse(new InstantCommand(RobotContainer.driveSubsystem::stopRobot, RobotContainer.driveSubsystem));
+    //   new JoystickButton(turnStick, 12)
+    //           .whileTrue(new InstantCommand(RobotContainer.driveSubsystem::testOdometryUpdates));
         
 
   }
