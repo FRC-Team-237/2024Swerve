@@ -1,22 +1,22 @@
 package frc.robot.PassThroughSystems.Motor;
 
-import com.revrobotics.CANSensor;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.MotorFeedbackSensor;
+import com.revrobotics.CANSparkMax;
+
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveChassis;
@@ -33,8 +33,8 @@ public class BaseMotorNEO implements BaseMotorInterface {
     private int CANID;
     private SwerveModuleConstants cAngle;
     private RelativeEncoder driveEncoder;
-    private SparkMaxAbsoluteEncoder angleEncoder;
-    private SparkMaxPIDController pid;
+    private SparkAbsoluteEncoder angleEncoder;
+    private SparkPIDController pid;
 
     public BaseMotorNEO(int CANID) {
         System.out.println("**** Activating SparkMAX NEO CANID:" + CANID);

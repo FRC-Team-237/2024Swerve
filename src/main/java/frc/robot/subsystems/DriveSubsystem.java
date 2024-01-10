@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -360,22 +362,20 @@ public class DriveSubsystem extends SubsystemBase {
     odometryTelemetry();
   }
 
-  public Command followPathCommand(String pathName)
-  {
-    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName); 
-    return new FollowPathWithEvents(
-      new FollowPathHolonomic(
+  /* public Command followPathCommand(String pathName) {
+    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+    HolonomicPathFollowerConfig config;
+    return new FollowPathHolonomic(
         path,
-        this::getPose,
-        this::getRobotRelativeSpeeds,
-        this::driveRobotRelative,
-        Constants.SwerveChassis.PATH_FOLLOWER_CONFIG,
-        this
-        ),
-        path,
-        this::getPose
-    );
-  }
+        DriveSubsystem::getPose,
+        DriveSubsystem::getRobotRelativeSpeeds,
+        DriveSubsystem::driveRobotRelative,
+        config,
+        () -> {
+          return false;
+        },
+        (Subsystem) this);
+  } */
 
   @Override
   public void periodic() {
