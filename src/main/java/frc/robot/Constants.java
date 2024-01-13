@@ -292,7 +292,7 @@ public final class Constants {
 			 * Specify whether telemetry will be printed and/or the robot will apply power
 			 * to the motors
 			 */
-			public static final SwerveDriveOrTelemetry swerveDriveOrTelemetry = SwerveDriveOrTelemetry.DRIVE_AND_TELEMETRY;
+			public static final SwerveDriveOrTelemetry swerveDriveOrTelemetry = SwerveDriveOrTelemetry.DRIVE_ONLY;
 
 			/**
 			 * Print odometry telemetry every 20 milliseconds.
@@ -341,10 +341,10 @@ public final class Constants {
 		 */
 		public static enum SwerveModuleConstants {
 			MOD0( // Front Left
-					BaseMotorControllerTypes.SPARKMAX, // Drive motor type
+					BaseMotorControllerTypes.TALON_SRX, // Drive motor type
 					BaseMotorControllerTypes.SPARKMAX, // Angle motor type
-					2, // driveMotorID
-					1, // angleMotorID
+					17, // driveMotorID
+					16, // angleMotorID
 					(2.51184335) *360.0/NEOSwerveConfiguration.ticksPerFullRotation, // angleOffset
 					false, // Inversion for drive motor
 					true, // Inversion for angle motor
@@ -352,10 +352,10 @@ public final class Constants {
 					true // Sensor phase for angle motor
 			),
 			MOD1( // Front Right
-					BaseMotorControllerTypes.SPARKMAX, // Drive motor type
+					BaseMotorControllerTypes.TALON_SRX, // Drive motor type
 					BaseMotorControllerTypes.SPARKMAX, // Angle motor type
-					4, // driveMotorID
-					3, // angleMotorID
+					15, // driveMotorID
+					14, // angleMotorID
 					(0.162798+Math.PI) *360.0/NEOSwerveConfiguration.ticksPerFullRotation, // angleOffset
 					false, // Inversion for drive motor
 					true, // Inversion for angle motor
@@ -364,10 +364,10 @@ public final class Constants {
 
 			),
 			MOD2( // Back Left
-					BaseMotorControllerTypes.SPARKMAX, // Drive motor type
+					BaseMotorControllerTypes.TALON_SRX, // Drive motor type
 					BaseMotorControllerTypes.SPARKMAX, // Angle motor type
-					6, // driveMotorID
-					5, // angleMotorID
+					11, // driveMotorID
+					10, // angleMotorID
 					(6.162460-Math.PI) *360.0/NEOSwerveConfiguration.ticksPerFullRotation, // angleOffset
 					false, // Inversion for drive motor
 					true, // Inversion for angle motor
@@ -376,10 +376,10 @@ public final class Constants {
 
 			),
 			MOD3( // Back Right
-					BaseMotorControllerTypes.SPARKMAX, // Drive motor type
+					BaseMotorControllerTypes.TALON_SRX, // Drive motor type
 					BaseMotorControllerTypes.SPARKMAX, // Angle motor type
-					8, // driveMotorID
-					7, // angleMotorID
+					13, // driveMotorID
+					12, // angleMotorID
 					(5.415143-Math.PI) *360.0/NEOSwerveConfiguration.ticksPerFullRotation, // angleOffset
 					false, // Inversion for drive motor
 					true, // Inversion for angle motor
@@ -455,7 +455,8 @@ public final class Constants {
 
 		public static enum IMUTypes {
 			Pigeon2,
-			NavX;
+			NavX,
+			ADIS16470
 		}
 
 		public static final IMUTypes imuType = IMUTypes.NavX;

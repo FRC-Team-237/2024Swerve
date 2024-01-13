@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.PassThroughSystems.IMU.IMUAdis;
 import frc.robot.PassThroughSystems.IMU.IMUInterface;
 import frc.robot.PassThroughSystems.IMU.IMUNavX;
 import frc.robot.PassThroughSystems.IMU.IMUPigeon2;
@@ -57,6 +58,8 @@ public class IMUSubsystem extends SubsystemBase implements IMUInterface {
       case NavX:
         imu = new IMUNavX();
         break;
+      case ADIS16470:
+        imu = new IMUAdis(); 
       default:
     }
 
